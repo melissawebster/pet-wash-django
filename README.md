@@ -1,2 +1,2 @@
 # pet-wash-django
- Web application for a Pet Shop Wash service
+Web application for pet shop wash service.
