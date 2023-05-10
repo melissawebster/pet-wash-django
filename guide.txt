@@ -1,0 +1,90 @@
+======== DJANGO ========
+
+http://127.0.0.1:8000/
+
+=========================================================	
+====================== AULA 01 ==========================
+=========================================================	
+
+1 = criar pasta do projeto
+
+2 = criar o venv 
+
+	$ python3 -m venv 'nome'
+
+3 = ativar o venv
+
+	$ source venv/bin/activate
+
+4 = instalar o django
+
+	$ pip install django
+
+5 = criar o projeto django
+
+	$ django-admin startproject petwash_project .
+
+6 = rodar o projeto django
+
+	$ python manage.py runserver
+
+6 = criar o app base
+
+	$ python manage.py startapp base
+
+===============================================================
+
+	se tiver erro de importação, django.db, django.http e etc
+	eh pq o vscode nao ta lendo pelo venv do projeto
+	dar um command shift p
+	>Python: Select Interpreter
+	escolher o venv do projeto
+	fonte: https://flaviocopes.com/error-unable-import-django-db/
+
+===============================================================
+
+	arquivos da pasta do app:
+
+	views.py = as funcionalidades do projeto, se comunica com a urls.py do projeto
+	tests.py = ali testa as funcionalidades do projeto
+	models.py = estrutura de banco de dados
+	admin.py = indica quais as models/tabelas ficam disponíveis pro usuário no painel administrativo
+	apps.py = configuração do app
+
+===============================================================
+
+7 = ir no settings.py (projeto) e colocar o nome do app no
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'base',
+]
+
+8 = ir no views e colocar a pagina 
+
+	from django.shortcuts import render
+	from django.http import HttpResponse
+
+	def index(request):
+		return render(request, 'index.html')
+
+===============================================================
+funcionalidades são no app
+coisas gerais são no projeto
+===============================================================
+
+9 = dentro da pasta do app, criar a pasta templates e arquivo index.html
+
+10 = e também a pasta static (pro css e js)
+
+
+
+
+=========================================================	
+====================== AULA 02 ==========================
+=========================================================
