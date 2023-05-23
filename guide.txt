@@ -88,3 +88,92 @@ coisas gerais são no projeto
 =========================================================	
 ====================== AULA 02 ==========================
 =========================================================
+
+- criar contact.html (botar no views.py e no urls.py)
+
+<BOOTSTRAP SETUP>
+
+-- $ pip install django-bootstrap-v5
+
+-- colocar o bootstrap no settings.py
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'base',
+    'bootstrap5',
+]
+
+-- colocar o bootstrap no html da pagina
+
+	<!doctype html>
+	{% load bootstrap5 %}
+
+	<link href="/static/starter-template.css" rel="stylesheet">
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/bootstrap.bundle.min.js"></script>
+
+
+</BOOTSTRAP SETUP>
+
+==========
+No Django temos:
+
+VARIÁVEIS = valores que ficarão disponíveis para serem exibidos no html
+
+TEMPLATE TAGS = marcações especiais que irão realizar ações na página (if, for, while...)
+
+FILTROS = alteram o conteúdo de exibição de uma variável
+==========
+
+Exemplo de criação de variável com dicionário:
+
+NO VIEWS:
+
+	def contact(request):
+		context = {
+			'phonenumber': '999999',
+			'tutor': 'Maria'
+		}
+		return render(request, 'contact.html', context)
+
+NO HTML:
+
+	<p> 
+		Envie uma mensagem através do formulário abaixo ou ligue para o telefone {{phonenumber}} e fale com o responsável {{tutor|upper}}.
+	</p>
+
+o |upper é um FILTRO, tem vários
+
+------
+
+No formulário, tem que colocar o method POST para enviar as informações:
+
+<form method="POST">
+
+(existe o método POST e o GET na web, métodos de envio e recebimento de informações)
+
+abaixo do form, TEM QUE COLOCAR uma chave de segurança pra proteger de inputs maliciosos
+
+{% csrf_token %}
+
+------
+
+colocar no views:
+
+def contact(request):
+    context = {
+        'phonenumber': '999999',
+        'tutor': 'Maria'
+    }
+	===============
+    if request.method == 'POST':
+        print(request.POST)
+	==============
+    return render(request, 'contact.html', context)
+
+isso faz o sistema pegar as informações enviadas 
