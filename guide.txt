@@ -177,3 +177,85 @@ def contact(request):
     return render(request, 'contact.html', context)
 
 isso faz o sistema pegar as informações enviadas 
+
+
+=========================================================	
+====================== AULA 03 ==========================
+=========================================================
+
+SISTEMA DE FORMS 
+
+1 = criar forms.py dentro da pasta base
+
+	from django import forms
+
+	class ContactForm(forms.Form):
+		name = forms.CharField()
+		email = forms.EmailField()
+		message = forms.CharField(widget=forms.Textarea)
+
+
+2 = ir no views.py e importar modulo
+
+	from base.forms import ContactForm
+
+
+3 = adicionar no def do contact:
+
+	def contact(request):
+		if request.method == 'GET':
+			form = ContactForm()
+		else:
+			form = ContactForm(request.POST)
+
+		responsible = {
+			'responsible_number': '999999',
+			'responsible_name': 'Maria',
+			'form': form
+		}
+		if request.method == 'POST':
+			print(request.POST)
+		return render(request, 'contact.html', responsible)
+
+
+4 = no mesmo arq, ir no html do formulario e colocar:
+
+	<form action="" method="POST" id="form">
+				{% csrf_token %}
+-->				{% bootstrap_form form %}
+
+
+
+5 = apagar o html antigo do form
+
+
+6 = adicionar o novalidate na html do form 
+	(ele torna o preenchimento de todos os campos obrigatórios)
+
+	<form action="" method="POST" id="form" novalidate>
+
+
+7 = para configurar mensagem de confirmação de envio, ir no views.py:
+
+	def contact(request):
+		success = False #######
+		if request.method == 'GET':
+			form = ContactForm()
+		else:
+			form = ContactForm(request.POST)
+			if form.is_valid(): ##########
+				success= True ###########
+
+		responsible = {
+			'responsible_number': '999999',
+			'responsible_name': 'Maria',
+			'form': form,
+			'success': success ############
+		}
+		
+		if request.method == 'POST':
+			print(request.POST)
+		return render(request, 'contact.html', responsible)
+
+
+8 = 
