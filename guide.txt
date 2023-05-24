@@ -258,4 +258,18 @@ SISTEMA DE FORMS
 		return render(request, 'contact.html', responsible)
 
 
-8 = 
+8 = e colocar no html:
+
+	<form action="" method="POST" id="form" novalidate>
+		{% csrf_token %}
+		{% bootstrap_form form %}
+
+		{% if success %} ###########
+
+			<p class="alert alert-success"> Message sent successfully!</p> ########
+
+		{% endif %} ##########
+
+		<button type="submit" class="btn btn-primary">Send</button>	
+   	</form>
+
