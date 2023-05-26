@@ -28,6 +28,11 @@ def contact(request):
     return render(request, 'contact.html', responsible)
 
 
+def test(request):
+    return render(request, 'test.html')
+
+
+
 
 '''
 class ContatoForm(forms.Form): #forms.Form é padrão do django

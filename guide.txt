@@ -2,6 +2,15 @@
 
 http://127.0.0.1:8000/
 
+
+SWEAT LESSONS:
+
+- as imagens precisam ser armazenadas em static/nomedapasta 
+para que o django as encontre e importe no html
+
+- python manage.py runserver 9000 (pra rodar num servidor
+que nao seja o 8000 padrão)
+
 =========================================================	
 ====================== AULA 01 ==========================
 =========================================================	
