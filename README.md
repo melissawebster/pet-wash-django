@@ -1,8 +1,8 @@
 === PetWash ===
 (in development)
 
-CLIENT | Bootstrap JavaScript SCSS CSS HTML
-SERVER | Python Django API
+- CLIENT | Bootstrap JavaScript SCSS CSS HTML
+- SERVER | Python Django API
 
 Final project for the Python Developer Course at Ultima School which I'm taking. 
 
