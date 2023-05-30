@@ -287,4 +287,25 @@ SISTEMA DE FORMS
 ====================== AULA 04 ==========================
 =========================================================
 
-1 = 
+1 = escolher no index.html o que vai se repetir nas outras páginas e o conteúdo que é só do index.
+	colocar esse conteúdo dentro das seguintes chaves:
+
+	{% block main %}
+	conteúdo
+	{% endblock %}
+
+2 = ir em uma página secundária, apagar todo o código que se repete na página (em relação ao index) 
+	e deixar apenas seu conteúdo 
+
+3 = colocar {% extends "index.html" %} na primeira linha de código
+
+4 = deixar seu conteúdo dentro das chaves:
+
+	{% block main %}
+	conteúdo
+	{% endblock %}
+
+
+=========================================================	
+====================== AULA 05 ==========================
+=========================================================

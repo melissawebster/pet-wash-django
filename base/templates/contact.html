@@ -3,22 +3,30 @@
 {% block main %}
 
 <main>
-	<h1 class="text-body-emphasis">Fale Conosco</h1>
-	<p> 
-	Envie uma mensagem através do formulário abaixo ou ligue para o telefone {{responsible_number}} e fale com o responsável {{responsible_name}}.
-	</p>
+	<div class="container my-5">
+		<div class="row justify-content-center">
+			<div class="col-10">
+		
+				<h1 class="text-body-emphasis">Fale Conosco</h1>
+				<p> 
+				Envie uma mensagem através do formulário abaixo ou ligue para o telefone {{responsible_number}} e fale com o responsável {{responsible_name}}.
+				</p>
 
-	<form action="" method="POST" id="form" novalidate>
-	{% csrf_token %}
-	{% bootstrap_form form %}
-	{% if success %}
+				<form action="" method="POST" id="form" novalidate>
+				{% csrf_token %}
+				{% bootstrap_form form %}
+				{% if success %}
 
-		<p class="alert alert-success"> Message sent successfully!</p>
+					<p class="alert alert-success"> Message sent successfully!</p>
 
-	{% endif %}
+				{% endif %}
 
-	<button type="submit" class="btn btn-primary">Send</button>	
-	</form>
+				<button type="submit" class="btn btn-primary">Send</button>	
+				</form>
+
+			</div>
+		</div>
+	</div>
 
 </main>
 
