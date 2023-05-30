@@ -105,6 +105,8 @@
     </div>
   </header>
 
+{% block main %}
+
   <div id="carouselExampleIndicators" class="carousel slide">
 
     <div class="carousel-indicators">
@@ -130,10 +132,7 @@
       <span class="visually-hidden">Next</span>
     </button>
   </div>
-  
-
-
-  <main>
+    
     <h1 class="text-body-emphasis">Reserve já o banho do seu pet</h1>
     <p class="fs-5 col-md-8">Reserva de banho para o seu pet</p>
 
@@ -142,8 +141,9 @@
     </div>
 
     <hr class="col-3 col-md-2 mb-5">
+{% endblock %}
 
-  </main>
+
   <footer class="pt-5 my-5 text-body-secondary border-top">
     PetWash&copy; 2023
   </footer>
