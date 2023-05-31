@@ -309,3 +309,74 @@ SISTEMA DE FORMS
 =========================================================	
 ====================== AULA 05 ==========================
 =========================================================
+
+CRIAÇÃO DO BANCO DE DADOS
+
+ORM do Django permite fazer consultas sem escrever código SQL
+classes python vao representar tabelas
+
+1 = ir no settings.py e definir o banco de dados em DATABASE
+	o sqlite já vem como default do django, dá pra adicionar outros se quiser
+
+2 = $ python manage.py migrate
+	criou varias tabelas dentro do sqlite3 que facilita a implementação
+	migrate do banco de dados, são as atualizações
+	cada vez que alterar algo no banco de dados, tem que dar esse comando
+	
+3 = abrir o db.sqlite3 no dbeaver e dar uma olhada nas tabelas que o comando criou
+	auth_ tabelas de sistema do usuário
+
+4 = ir no models.py e criar uma tabela para o form do contact.html:
+
+	class Contact(models.Model):
+		name = models.CharField(max_length=50)
+		email = models.EmailField(max_length=50)
+		message = models.TextField()
+		data = models.DateTimeField(auto_now_add=True)
+
+5 = $ python manage.py makemigrations
+
+6 = $ python manage.py migrate
+	verifica quais arquivos de migração de dados ainda não foram executados e os efetiva no banco de dados
+
+7 = ir no views.py e importar:
+	from base.models import Contact
+
+8 = e também no views, adicionar:
+
+	def contact(request):
+    success = False
+    if request.method == 'GET':
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            success = True
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            Contact.objects.create(name=name, email=email, message=message)
+		
+9 = ir no forms.py e atualizar:
+
+	from django import forms
+	from base.models import Contact  #######
+
+	class ContactForm(forms.ModelForm):
+		class Meta: #####
+			model = Contact ########
+			fields = ['name', 'email', 'message'] ##########
+
+10 = ir no views.py e atualizar:
+
+	def contact(request):
+		success = False
+		if request.method == 'GET':
+			form = ContactForm()
+		else:
+			form = ContactForm(request.POST or None)
+			if form.is_valid():
+				success = True
+				form.save()
+
+11 = 

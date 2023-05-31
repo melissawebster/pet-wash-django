@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from base.forms import ContactForm
+from base.models import Contact
 
 #sempre que se quer criar uma pagina em branco, tem que vir nas views
 
@@ -12,9 +13,10 @@ def contact(request):
     if request.method == 'GET':
         form = ContactForm()
     else:
-        form = ContactForm(request.POST)
+        form = ContactForm(request.POST or None)
         if form.is_valid():
-            success= True
+            success = True
+            form.save()
 
     responsible = {
         'responsible_number': '999999',
