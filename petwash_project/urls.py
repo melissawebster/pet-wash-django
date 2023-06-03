@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from base.views import index, contact, test
+from base.views import index, contact, booking
 
 
 #adicionar rotas do sistema
 urlpatterns = [
     path('', index),
     path('contact/', contact),
-    path('test/', test),
+    path('booking/', booking),
     path('admin/', admin.site.urls),
 ]

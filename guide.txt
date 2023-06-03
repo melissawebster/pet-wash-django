@@ -166,9 +166,9 @@ No formulário, tem que colocar o method POST para enviar as informações:
 
 (existe o método POST e o GET na web, métodos de envio e recebimento de informações)
 
-abaixo do form, TEM QUE COLOCAR uma chave de segurança pra proteger de inputs maliciosos
+abaixo do <form>, TEM QUE COLOCAR uma chave de segurança pra proteger de inputs maliciosos:
 
-{% csrf_token %}
+	{% csrf_token %}
 
 ------
 
