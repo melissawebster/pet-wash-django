@@ -9,22 +9,8 @@ def index(request):
     return render(request, 'index.html')
 
 
-def contact(request):
-    success = False
-    form = ContactForm(request.POST or None)
-
-    if form.is_valid(): 
-        success = True
-        form.save()
-
-    responsible = {
-        'responsible_number': '(99) 8877-6655',
-        'responsible_name': 'Melissa',
-        'form': form,
-        'success': success
-    }
-    
-    return render(request, 'contact.html', responsible)
+def AboutUs(request):
+    return render(request, 'about-us.html')
 
 
 def booking(request):
@@ -43,11 +29,26 @@ def booking(request):
     return render(request, 'booking.html', variables)
 
 
+def contact(request):
+    success = False
+    form = ContactForm(request.POST or None)
 
-# toda view precisa receber um parâmetro chamado request
-# ele vai contar as informações sobre a requisição
+    if form.is_valid(): 
+        success = True
+        form.save()
+
+    responsible = {
+        'responsible_number': '(99) 8877-6655',
+        'responsible_name': 'Melissa',
+        'form': form,
+        'success': success
+    }
+    
+    return render(request, 'contact.html', responsible)
 
 
+def login(request):
+    return render(request, 'login.html')
 
 
 

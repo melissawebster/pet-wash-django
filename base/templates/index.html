@@ -95,39 +95,29 @@
 <body>
   
   <header class="container-header pt-3">
-    <div class="row d-flex justify-content-center">
-      <div class="col-10 d-flex justify-content-center border">
-
-        <img src="../static/imgs/cat-vector.png" class="vectors" alt="cat-vector">
+    <div class="row mx-3">
         <h1>PetWash</h1>
-        <img src="../static/imgs/dog-vector.png" class="vectors" alt="dog-vector">
-
-      </div>
     </div>
-    <div class="row d-flex justify-content-center mt-3">
-      <div class="col-10 d-flex justify-content-center border">
-        <h2>Making bath time a joy for pets</h2>
-      </div>
+    <div class="row mx-3">
+        <h5>Making bath time a joy for pets</h5>
     </div>
   </header>
 
-  <nav class="container-fluid text-center bg-white">
-    <div class="row">
-      <div class="col-6">
-        <a href="../booking">Book</a>
-      </div>
-      <div class="col-6">
-        <a href="../contact">Contact</a>
-      </div>
+  <nav class="bg-nav py-2">
+    <div class="row mx-3 d-inline">
+      <a href="../">Home</a>
+      <a href="../about-us">About Us</a>
+      <a href="../booking">Book</a>
+      <a href="../contact">Contact</a>
     </div>
   </nav>
 
 {% block main %}
 
-  <div class="container-fluid">
+  <div class="container-fluid bg-white">
     <div class="row">
 
-      <div class="col-6 p-5">
+      <div class="col-md-6 p-5">
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis dignissimos tempora laudantium adipisci. Commodi voluptatem porro quae debitis voluptate nobis architecto totam nihil nulla unde. Corporis, at? Expedita, quia deserunt!
         </p>
@@ -138,7 +128,7 @@
 
       </div>
 
-      <div class="col-6 p-3">
+      <div class="col-md-6 p-3">
         <div id="carouselExampleIndicators" class="carousel slide">
 
           <div class="carousel-indicators">
@@ -169,19 +159,94 @@
     </div>
   </div>
     
-  <div class="container-fluid mt-5">
+  <div class="container-fluid my-5">
     <div class="row justify-content-center">
+
       <div class="col text-center">
 
-        <h2 class="text-body-emphasis">Reserve já o banho do seu pet</h2>
+        <h2 class="text-body-emphasis d-inline">Reserve já o banho do seu pet</h2>
 
-        <div class="mb-5">
-          <a href="/contact/" class="btn btn-primary btn-lg mt-3 px-4">Book now!</a>
+        <div class="mb-5 d-inline">
+          <a href="/contact/" class="btn btn-primary btn-lg m-3 px-4">Book now!</a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="container-fluid bg-white">
+
+    <div class="row">
+      <h4>Other services:</h4>
+    </div>
+
+    <div class="row border">
+      <div class="col-md-6">
+        <div class="row g-0 dark-border-solid transparent-bg overflow-hidden flex-md-row mb-4  position-relative">
+          <div class="col p-4 d-flex flex-column position-static text-darker">
+            <strong class="d-inline-block mb-2 text-success">Bedroom</strong>
+            <h3 class="mb-0">Bed Decor</h3>
+            <div class="mb-1 text-muted">Nov 12</div>
+            <p class="card-text mb-auto">Picture Credit:<br>HeartCraftedVN (etsy.com)</p>
+            <a href="#" class="stretched-link" onclick="OutOfStock()" title="Bed Decor">Add to cart &rarr;</a>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <img src="img/bedroom01" width="200px" height="250px" alt="bedroom featured product">
+  
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row g-0 dark-border-solid transparent-bg overflow-hidden flex-md-row mb-4  position-relative">
+          <div class="col p-4 d-flex flex-column position-static text-darker">
+            <strong class="d-inline-block mb-2 text-success">Living Room</strong>
+            <h3 class="mb-0">Coffee Tablewood</h3>
+            <div class="mb-1 text-muted">Nov 11</div>
+            <p class="mb-auto">Picture Credit:<br>Ancient World (etsy.com)</p>
+            <a href="#" class="stretched-link" onclick="OutOfStock()" title="Coffee Tablewood">Add to cart &rarr;</a>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <img src="img/living01" width="200px" height="250px" alt="living room featured product">
+  
+          </div>
         </div>
       </div>
     </div>
+  
+    <div class="row border">
+      <div class="col-md-6">
+        <div class="row g-0 dark-border-solid transparent-bg overflow-hidden flex-md-row mb-4  position-relative">
+          <div class="col p-4 d-flex flex-column position-static text-darker">
+            <strong class="d-inline-block mb-2 text-success">Garden</strong>
+            <h3 class="mb-0">Plant Hook</h3>
+            <div class="mb-1 text-muted">Nov 12</div>
+            <p class="card-text mb-auto">Picture Credit:<br>Trollhill Forge (etsy.com)</p>
+            <a href="#" class="stretched-link" onclick="OutOfStock()" title="Plant Hook">Add to cart &rarr;</a>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <img src="img/garden01" width="200px" height="250px" alt="garden featured product">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row g-0 dark-border-solid transparent-bg overflow-hidden flex-md-row mb-4  position-relative">
+          <div class="col p-4 d-flex flex-column position-static text-darker">
+            <strong class="d-inline-block mb-2 text-success">Pets</strong>
+            <h3 class="mb-0">Flower Shaped Pet Bed</h3>
+            <div class="mb-1 text-muted">Nov 11</div>
+            <p class="mb-auto">Picture Credit:<br>Paws Valley (etsy.com)</p>
+            <a href="#" class="stretched-link" onclick="OutOfStock()" title="Flower Shaped Pet Bed">Add to cart &rarr;</a>
+          </div>
+          <div class="col-auto d-none d-lg-block">
+            <img src="img/pets01.jpg" width="200px" height="250px" alt="pets featured product">
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
-     
+  
+  
       
      
 
@@ -190,7 +255,7 @@
 {% endblock %}
 
 
-  <footer class="container-footer p-4 d-flex justify-content-center bg-primary">
+  <footer class="container-footer p-4 d-flex justify-content-center">
     PetWash&copy; 2023
   </footer>
 

@@ -3,15 +3,21 @@ from django.db import models
 
 
 class Contact(models.Model):
-    name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50)
-    message = models.TextField()
-    data = models.DateTimeField(auto_now_add=True)
-
+    name = models.CharField(verbose_name='Name', max_length=50)
+    email = models.EmailField(verbose_name='E-mail', max_length=50)
+    message = models.TextField(verbose_name='Message')
+    data = models.DateTimeField(verbose_name='Date sent', auto_now_add=True)
+    def __str__(self):
+        return f'{self.name} [{self.email}]'
+    
+    class Meta:
+        verbose_name = 'Contact form'
+        verbose_name_plural = 'Contact forms'
+        ordering = ['-data']
 
 def validate_cellphone_length(value):
     if len(str(value)) > 11:
-        raise ValidationError('O número de telefone deve ter no máximo 11 dígitos.')
+        raise ValidationError('It should have at most 11 digits.')
 
 
 class Booking(models.Model):
@@ -19,3 +25,5 @@ class Booking(models.Model):
     cellphone = models.IntegerField(validators=[validate_cellphone_length])
     bathday = models.DateField() 
     comments = models.TextField()
+    def __str__(self):
+        return f'{self.petname} [{self.bathday}]'
