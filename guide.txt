@@ -455,4 +455,198 @@ verbose_name é o nome que vai aparecer no painel pra nomear o elemento
 		default_auto_field = 'django.db.models.BigAutoField'
 		name = 'base'
 
-9 = 
+
+=========================================================	
+====================== AULA 07 ==========================
+=========================================================
+
+1 = ir no models.py e adicionar
+	(para visualizar no admin se uma info foi lida ou não)
+
+	class Contact(models.Model):
+		name = models.CharField(verbose_name='Name', max_length=50)
+		email = models.EmailField(verbose_name='E-mail', max_length=50)
+		message = models.TextField(verbose_name='Message')
+		data = models.DateTimeField(verbose_name='Date sent', auto_now_add=True)
+		read = models.BooleanField(verbose_name='Read', default=False, blank=True) ######
+		def __str__(self):
+			return f'{self.name} [{self.email}]'
+		
+		class Meta:
+			verbose_name = 'Contact form'
+			verbose_name_plural = 'Contact forms'
+			ordering = ['-data']
+
+
+2 = desligar o servidor e dar um
+
+	$ python manage.py makemigrations
+
+	e depois
+
+	$ python manage.py migrate
+
+
+3 = ir no admin.py e avisar que esse novo campo vai aparecer no admin
+
+	@admin.register(Contact)
+	class ContactAdmin(admin.ModelAdmin):
+		list_display = ['name', 'email', 'data', 'read'] #####
+		search_fields = ['name', 'email']
+		list_filter = ['data', 'read'] ####
+
+4 = adicionar uma action no admin.py para poder marcar como lido
+
+	from django.contrib import messages #####
+
+	@admin.action(description='Mark contact form as read') ###
+	def mark_as_read(modeladmin, request, queryset): ####
+		queryset.update(read=True) ####
+		modeladmin.message_user(request, 'Contact form marked as read', messages.SUCCESS) ####
+
+	@admin.register(Contact)
+	class ContactAdmin(admin.ModelAdmin):
+		list_display = ['name', 'email', 'data', 'read']
+		search_fields = ['name', 'email']
+		list_filter = ['data', 'read']
+		actions = [mark_as_read] ######
+
+5 = CRIAR O APP da reserva
+
+	$ python manage.py startapp booking
+
+6 = registrar o booking no settings.py (projeto)
+
+	INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'base',
+    'bootstrap5',
+    'booking'
+]
+
+7 = ir no models.py do app booking e criar a tabela:
+
+	class Booking(models.Model):
+		SIZE_OPTIONS = (
+			(0, 'Small'),
+			(1, 'Medium'),
+			(2, 'Big'),
+		)
+		SHIFT_OPTIONS = (
+			('morning', 'Morning'),
+			('afternoon', 'Afternoon'),
+		)
+
+		name = models.CharField(verbose_name='Name', max_length=50)
+		email = models.EmailField(verbose_name='E-mail')
+		pet_name = models.CharField(verbose_name='Pet name', max_length=50)
+		date = models.DateField(verbose_name='Date', help_text='mm/dd/yyyy')
+		shift = models.CharField(verbose_name='Shift', max_length=10, choices=SHIFT_OPTIONS)
+		size = models.IntegerField(verbose_name='Size', choices=SIZE_OPTIONS)
+		notes = models.TextField(blank=True)
+
+		def __str__(self):
+			return f'{self.name}: {self.date} - {self.shift}'
+
+		class Meta:
+			verbose_name = 'Bath booking'
+			verbose_name_plural = 'Bath bookings'
+
+8 = quit server e rodar:
+
+	$ python manage.py makemigrations
+
+	e depois
+
+	$ python manage.py migrate
+
+9 = ir no admin.py do app booking e importar as infos do bd no admin
+
+	from django.contrib import admin
+	from booking.models import Booking
+
+	@admin.register(Booking)
+	class BookingAdmin(admin.ModelAdmin):
+		list_display = ['name', 'email', 'pet_name', 'date']
+		search_fields = ['pet_name']
+		list_filter = ['date', 'shift', 'size']
+
+===============================================================
+
+Geralmente quando criamos um novo app, o que precisamos pra que ele funcione:
+
+#Model
+#ModelForm
+#View 
+#Route 
+#Template
+
+===============================================================
+
+10 = para fazer o form, criar o arquivo forms.py na pasta do app:
+
+	from django import forms
+	from booking.models import Booking
+
+	class BookingForm(forms.ModelForm):
+		class Meta:
+			model = Booking
+			fields = [
+				'name', 'email', 'pet_name', 'date', 'shift', 'size', 'notes'
+			]
+
+11 = ir na views.py do booking:
+
+	from django.shortcuts import render
+	from booking.forms import BookingForm
+
+	def create_booking(request):
+		success = False
+		form = BookingForm(request.POST or None)
+
+		if form.is_valid(): 
+			success = True
+			form.save()
+
+		responsible = {
+			'form': form,
+			'success': success
+		}
+		
+		return render(request, 'booking.html', responsible)
+
+12 = criar pasta templates dentro do app booking e colocar o booking.html
+
+13 = ir no urls.py do projeto e adicionar o path booking
+
+	from django.contrib import admin
+	from django.urls import path, include ####
+	from base.views import index, contact, booking, AboutUs, login
+
+
+	#adicionar rotas do sistema
+	urlpatterns = [
+		path('', index),
+		path('about-us/', AboutUs),
+		path('booking/', include('booking.urls'), namespace='booking'), #####
+		path('contact/', contact),
+		path('login/', login),
+		path('admin/', admin.site.urls),
+]
+
+14 = criar um novo arquivo urls.py dentro do app booking
+
+15 = no novo urls.py: 
+
+	from django.urls import path
+	from booking.views import create_booking
+
+	app_name = 'booking'
+	urlpatterns = [
+		path('create/', create_booking, name='create booking')
+

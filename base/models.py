@@ -7,6 +7,7 @@ class Contact(models.Model):
     email = models.EmailField(verbose_name='E-mail', max_length=50)
     message = models.TextField(verbose_name='Message')
     data = models.DateTimeField(verbose_name='Date sent', auto_now_add=True)
+    read = models.BooleanField(verbose_name='Read', default=False, blank=True)
     def __str__(self):
         return f'{self.name} [{self.email}]'
     
