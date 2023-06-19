@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+{% load bootstrap5 %}
+{% block main %}
+
+
+<main>
+	<div class="container my-5">
+		<div class="row justify-content-center">
+			<div class="col-10">
+		
+				<h1 class="text-body-emphasis">Book a bath!</h1>
+				<p> 
+                    uma mensagem através do formulário abaixo ou ligue para o telefone {{responsible_number}} e fale com o responsável {{responsible_name}}.
+                </p>
+
+				<form action="" method="POST" id="form" novalidate>
+				{% csrf_token %}
+				{% bootstrap_form form %}
+				{% if success %}
+
+					<p class="alert alert-success"> Message sent successfully!</p>
+
+				{% endif %}
+
+				<button type="submit" class="btn btn-primary">Send</button>	
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+</main>
+
+{% endblock %}

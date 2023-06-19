@@ -16,8 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from base.views import index, contact, booking, AboutUs, login
-
+from base.views import index, contact, AboutUs, login
 
 #adicionar rotas do sistema
 urlpatterns = [
@@ -27,4 +26,6 @@ urlpatterns = [
     path('contact/', contact),
     path('login/', login),
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/', include('rest_api.urls', namespace='api')),
 ]

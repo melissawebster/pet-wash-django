@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from booking.forms import BookingForm
 
-def create_booking(request):
+def create(request):
     success = False
     form = BookingForm(request.POST or None)
 
@@ -14,4 +14,4 @@ def create_booking(request):
         'success': success
     }
     
-    return render(request, 'booking.html', responsible)
+    return render(request, 'create.html', responsible)

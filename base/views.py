@@ -13,22 +13,6 @@ def AboutUs(request):
     return render(request, 'about-us.html')
 
 
-def booking(request):
-    success = False
-    form = BookingForm(request.POST or None)
-
-    if form.is_valid(): 
-        success = True
-        form.save()
-
-    variables = {
-        'form': form,
-        'success': success
-    }
-    
-    return render(request, 'booking.html', variables)
-
-
 def contact(request):
     success = False
     form = ContactForm(request.POST or None)

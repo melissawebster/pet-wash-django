@@ -650,3 +650,95 @@ Geralmente quando criamos um novo app, o que precisamos pra que ele funcione:
 	urlpatterns = [
 		path('create/', create_booking, name='create booking')
 
+=========================================================	
+====================== AULA 08 ==========================
+=========================================================
+
+1 = para validar a data escolhida pelo usuario (nao ser uma data do passado)ir no forms.py do booking e digitar:
+
+	from django import forms
+	from booking.models import Booking
+	from datetime import date #####
+
+	class BookingForm(forms.ModelForm): ######
+		def clean_date(self):
+			date = self.clean_date['date']
+			today = date.today()
+			if date < today:
+				raise forms.ValidationError('You cannot book a bath on a day from the past.')
+			return date
+
+		class Meta:
+			model = Booking
+			fields = [
+				'name', 'email', 'pet_name', 'date', 'shift', 'size', 'notes'
+			]
+
+2 = 
+
+
+INSTALAR A API REST
+
+1 = $ pip install djangorestframework
+
+2 = $ python -m pip install djangorestframework
+
+3 = ir no settings.py
+
+	INSTALLED_APPS = [
+		'django.contrib.admin',
+		'django.contrib.auth',
+		'django.contrib.contenttypes',
+		'django.contrib.sessions',
+		'django.contrib.messages',
+		'django.contrib.staticfiles',
+		'base',
+		'bootstrap5',
+		'booking',
+		'rest_framework', ######
+	]
+
+4 = no urls.py do projeto:
+
+	urlpatterns = [
+		path('', index),
+		path('about-us/', AboutUs),
+		path('booking/', include('booking.urls', namespace='booking')),
+		path('contact/', contact),
+		path('login/', login),
+		path('admin/', admin.site.urls),
+		path('api-auth/', include('rest_framework.urls')), ####
+	]
+
+5 = criar o app do rest_framework
+
+	$ python manage.py startapp rest_api
+
+6 = colocar 'rest_api', no settings do projeto
+
+7 = views.py do rest_api:
+
+	from django.shortcuts import render
+	from rest_framework.decorators import api_view
+	from rest_framework.response import Response
+
+	@api_view(['GET', 'POST']) #essa api pode ser acessada pelos métodos get e post
+	def hello_world(request):
+		if request.method == 'POST':
+			return Response({'message': f'Hello, {request.data.get("name")}'})
+		return Response({'hello': 'world API'})
+
+
+7 = criar urls.py no rest_api e colocar:
+
+	from django.urls import path
+	from rest_api.views import hello_world
+
+	app_name = 'rest_api'
+	urlpatterns = [
+		path('hello_world', hello_world, name='hello_world_api'),
+	]
+
+8 = registrar no urls.py do projeto e registrar:
+
+	

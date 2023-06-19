@@ -1,7 +1,7 @@
 from django.urls import path
-from booking.views import create_booking
+from booking.views import create
 
 app_name = 'booking'
 urlpatterns = [
-    path('create/', create_booking, name='create booking')
+    path('create/', create, name='create_booking')
 ]
