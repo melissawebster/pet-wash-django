@@ -741,4 +741,97 @@ INSTALAR A API REST
 
 8 = registrar no urls.py do projeto e registrar:
 
-	
+
+
+=========================================================	
+====================== AULA 09 ==========================
+=========================================================
+
+1 = na views da api_rest
+
+from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+from booking.models import Booking
+from rest_api.serializers import BookingModelSerializer
+
+class BookingModelViewSet(ModelViewSet):
+    queryset = Booking.objects.all()
+    serializer_class = BookingModelSerializer
+
+@api_view(['GET', 'POST']) #essa api pode ser acessada pelos métodos get e post
+def hello_world(request):
+    if request.method == 'POST':
+        return Response({'message': f'Hello, {request.data.get("name")}'})
+    return Response({'hello': 'world API'})
+
+
+2 = criar serializers.py no root do api_rest
+
+	from rest_framework.serializers import ModelSerializer
+	from booking.models import Booking
+
+	class BookingModelSerializer(ModelSerializer):
+		class Meta:
+			model = Booking
+			fields = '__all__'
+
+
+3 = criar a rota no urls.py do rest_api
+
+	from django.urls import path
+	from rest_api.views import hello_world, BookingModelViewSet #####
+	from rest_framework.routers import SimpleRouter ######
+
+	app_name = 'rest_api'
+	router = SimpleRouter(trailing_slash=False) #False pra nao adicionar barra no final da URL ######
+	router.register('booking', BookingModelViewSet) #########
+
+	urlpatterns = [
+		path('hello_world', hello_world, name='hello_world_api'),
+	]
+
+	urlpatterns += router.urls ########
+
+
+4 = testar na url do localhost /api/booking
+
+
+5 = para customizar a paginação do framework, ir no settings do projeto e adicionar:
+
+	REST_FRAMEWORK = {
+		'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+		'PAGE_SIZE': 10
+	}
+
+
+6 = $ pip install model-bakery (ajuda a testar paginação)
+
+
+7 = criar no root do rest_api: management/commands/populate_booking.py
+
+
+8 = nesse novo arquivo:
+
+	from django.core.management.base import BaseCommand
+	from model_bakery import baker
+	from booking.models import Booking
+
+	class Command(BaseCommand):
+		help = 'create fake data to test API'
+		def handle(self, *args, **options):
+			total = 50
+			self.stdout.write(
+				self.style.WARNING(f'Creating {total} bookings')
+			)
+			for i in range(total):
+            	booking = baker.make(Booking)
+				booking.save()
+			self.stdout.write(
+				self.style.SUCCESS('Bookings created')
+			)
+
+
+9 = rodar $ python manage.py populate_booking
+	e visualizar no browser
