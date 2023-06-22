@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from base.views import index, contact, AboutUs, login
+from base.views import index, contact, about_us, login, create_booking
 
 #adicionar rotas do sistema
 urlpatterns = [
     path('', index),
-    path('about-us/', AboutUs),
-    path('booking/', include('booking.urls', namespace='booking')),
+    path('about-us/', about_us),
+    path('create-booking/', create_booking),
     path('contact/', contact),
     path('login/', login),
     path('admin/', admin.site.urls),

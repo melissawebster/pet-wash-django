@@ -1,5 +1,5 @@
 from django import forms
-from base.models import Contact, Booking
+from base.models import Contact #Booking
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -7,14 +7,14 @@ class ContactForm(forms.ModelForm):
         fields = ['name', 'email', 'message']
 
 
-class DateInput(forms.DateInput):
-    input_type = 'date'
+# class DateInput(forms.DateInput):
+#     input_type = 'date'
 
 
-class BookingForm(forms.ModelForm):
-    class Meta:
-        model = Booking
-        fields = ['petname', 'cellphone', 'bathday', 'comments']
-        widgets = {
-            'bathday': DateInput(),
-        }
+# class BookingForm(forms.ModelForm):
+#     class Meta:
+#         model = Booking
+#         fields = ['petname', 'cellphone', 'bathday', 'comments']
+#         widgets = {
+#             'bathday': DateInput(),
+#         }

@@ -1,15 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from base.forms import ContactForm, BookingForm
+from base.forms import ContactForm
 from base.models import Contact, Booking
-
-#sempre que se quer criar uma pagina em branco, tem que vir nas views
+from booking.forms import BookingForm
 
 def index(request):
     return render(request, 'index.html')
 
 
-def AboutUs(request):
+def about_us(request):
     return render(request, 'about-us.html')
 
 
@@ -34,7 +33,20 @@ def contact(request):
 def login(request):
     return render(request, 'login.html')
 
+def create_booking(request):
+    success = False
+    form = BookingForm(request.POST or None)
 
+    if form.is_valid(): 
+        success = True
+        form.save()
+
+    responsible = {
+        'form': form,
+        'success': success
+    }
+    
+    return render(request, 'create-booking.html', responsible)
 
 
 
