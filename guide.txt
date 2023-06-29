@@ -835,3 +835,86 @@ def hello_world(request):
 
 9 = rodar $ python manage.py populate_booking
 	e visualizar no browser
+
+
+=========================================================	
+====================== AULA 10 ==========================
+=========================================================
+
+ADICIONANDO PERMISSÕES AOS VIEWSETS (SEGURANÇA)
+
+1 = no settings do projeto:
+	adicionar 'rest_framework.authtoken'
+
+2 = como uma nova tabela foi adicionada, dar migrate
+	$ python manage.py migrate
+
+3 = criar um arquivo create_token.py dentro de
+	rest_api/management/commands
+
+4 = colocar o código:
+
+	from django.core.management.base import BaseCommand
+	from django.contrib.auth.models import User
+	from rest_framework.authtoken.models import Token
+
+	class Command(BaseCommand):
+		help = 'Creates a new token to be used'
+		def add_arguments(self, parser):
+			parser.add_argument('--username', required=True)
+			parser.add_argument('--password', required=True)
+
+		def handle(self, *args, **options):
+			username = options['username']
+			password = options['password']
+
+			self.stdout.write(
+				self.style.WARNING(f'Creating user {username}')
+			)
+			user = User(username=username)
+			user.first_name = username
+			user.set_password(password)
+			user.save()
+
+			self.stdout.write(
+				self.style.SUCCESS(f'User created') 
+			)
+			self.stdout.write(
+				self.style.WARNING(f'Creating a token for the user...')
+			)
+			token = Token.objects.create(user=user)
+			self.stdout.write(
+				self.style.SUCCESS(f'Token created: {token.key}')
+			)
+
+5 = $ python manage.py create_token --username petshop1 --password 123 
+
+	676be81ffbca543800e6a140f203c1af05b34f81
+
+6 = no rest_api/views.py:
+
+	from django.shortcuts import render
+	from rest_framework.decorators import api_view
+	from rest_framework.response import Response
+	from rest_framework.viewsets import ModelViewSet
+	from booking.models import Booking
+	from rest_api.serializers import BookingModelSerializer
+	from rest_framework.authentication import TokenAuthentication #####
+	from rest_framework.permissions import IsAuthenticated #####
+
+
+class BookingModelViewSet(ModelViewSet):
+    queryset = Booking.objects.all() 
+    # faz o query no model, mas retorna um objeto
+    serializer_class = BookingModelSerializer 
+    #define qual serializer vai ser utilizado para tratar o objeto (e possibilitar um futuro json)
+    authentication_classes = [TokenAuthentication]  ######
+    #lista para aceitar as autenticações baseadas em token 
+    permission_classes = [IsAuthenticated] ######
+    #lista que vai autenticar as permissões que a views possui, só os usuários autenticados vão gerar endpoints pra api
+
+	@api_view(['GET', 'POST']) #essa api pode ser acessada pelos métodos get e post
+	def hello_world(request):
+		if request.method == 'POST':
+			return Response({'message': f'Hello, {request.data.get("name")}'})
+		return Response({'hello': 'world API'})
