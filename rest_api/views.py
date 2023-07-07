@@ -2,11 +2,18 @@ from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-from booking.models import Booking
-from rest_api.serializers import BookingModelSerializer
+from booking.models import Booking, Branch
+from rest_api.serializers import BookingModelSerializer, BranchModelSerializer
 
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated 
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+
+
+class BranchModelViewSet(ModelViewSet):
+    queryset = Branch.objects.all()
+    serializer_class = BranchModelSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class BookingModelViewSet(ModelViewSet):

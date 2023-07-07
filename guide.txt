@@ -918,3 +918,184 @@ class BookingModelViewSet(ModelViewSet):
 		if request.method == 'POST':
 			return Response({'message': f'Hello, {request.data.get("name")}'})
 		return Response({'hello': 'world API'})
+
+
+
+=========================================================	
+====================== AULA 11 ==========================
+=========================================================
+RELAÇÃO DE SERIALIZADORES
+
+
+1 = Para que o usuário possa escolher em qual filial da PetWash ele quer marcar
+o banho, criar a tabela Branch e uma foreign key dela na tabela Booking.
+
+booking / models.py :
+
+	from django.db import models
+
+
+	class Booking(models.Model):
+		SIZE_OPTIONS = (
+			(0, 'Small'),
+			(1, 'Medium'),
+			(2, 'Big'),
+		)
+		SHIFT_OPTIONS = (
+			('morning', 'Morning'),
+			('afternoon', 'Afternoon'),
+		)
+
+		name = models.CharField(verbose_name='Name', max_length=50)
+		email = models.EmailField(verbose_name='E-mail')
+		pet_name = models.CharField(verbose_name='Pet name', max_length=50)
+		date = models.DateField(verbose_name='Date', help_text='mm/dd/yyyy')
+		shift = models.CharField(verbose_name='Shift', max_length=10, choices=SHIFT_OPTIONS)
+		size = models.IntegerField(verbose_name='Size', choices=SIZE_OPTIONS)
+		notes = models.TextField(blank=True, max_length=1000)
+
+		branch = models.ForeignKey( ############
+			'Branch', 
+			related_name='what',
+			on_delete=models.CASCADE,
+			blank=True,
+			null=True
+			)
+
+		def __str__(self):
+			return f'{self.name}: {self.date} - {self.shift}'
+
+		class Meta:
+			verbose_name = 'Bath booking'
+			verbose_name_plural = 'Bath bookings'
+		
+
+	class Branch(models.Model): #############
+		name = models.CharField(verbose_name='Branch', max_length=50)
+		street = models.CharField(verbose_name='Street', max_length=150)
+		street_number = models.IntegerField(verbose_name='Street number')
+		neighborhood = models.CharField(verbose_name='Neighborhood', max_length=50)
+
+
+=========================================================
+Mesmo que a foreign key seja obrigatória, deixar por enquanto 
+como opcional para não dar conflito com os dados já existentes no BD.
+=========================================================
+
+2 = *** Inserir infos no BD pelo terminal ***
+
+	$ python manage.py shell
+
+	$ from booking.models import Branch
+
+	$ Branch.objects.create(name='Downtown', street='Street One', street_number='01', neighborhood='Downtown')
+
+	$ Branch.objects.create(name='Far Away', street='Street Two', street_number='02', neighborhood='Far Away')
+
+
+3 = *** Editar reservas já existentes no BD pelo terminal ***
+
+	$ from booking.models import Booking, Branch
+
+	$ Downtown = Branch.objects.first()
+
+	$ Booking.objects.all().update(branch=Far Away)
+
+	$ quit()
+
+
+4 = Fazer a serialização dessa nova tabela e referenciar tbm a foreign key na Booking
+
+	rest_api / serializers.py :
+
+	from rest_framework.serializers import ModelSerializer
+	from booking.models import Booking, Branch ####
+
+
+	class BranchModelSerializer(ModelSerializer): ######
+		class Meta:
+			model = Branch
+			fields = '__all__'
+
+
+	class BookingModelSerializer(ModelSerializer):
+		branch = BranchModelSerializer(read_only=True) #####
+
+		class Meta:
+			model = Booking
+			fields = '__all__'
+
+
+5 = Testar no Postman
+
+
+
+6 = 
+
+	rest_api / views.py :
+
+	from django.shortcuts import render
+	from rest_framework.decorators import api_view
+	from rest_framework.response import Response
+	from rest_framework.viewsets import ModelViewSet
+	from booking.models import Booking, Branch #####
+	from rest_api.serializers import BookingModelSerializer, BranchModelSerializer ####
+
+	from rest_framework.authentication import TokenAuthentication
+	from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly ####
+
+
+	class BranchModelViewSet(ModelViewSet): ######
+		queryset = Branch.objects.all()
+		serializer_class = BranchModelSerializer
+		authentication_classes = [TokenAuthentication]
+		permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+	class BookingModelViewSet(ModelViewSet):
+		queryset = Booking.objects.all() 
+		# faz o query no model, mas retorna um objeto
+		serializer_class = BookingModelSerializer 
+		#define qual serializer vai ser utilizado para tratar o objeto (e possibilitar um futuro json)
+		authentication_classes = [TokenAuthentication] 
+		#lista para aceitar as autenticações baseadas em token
+		permission_classes = [IsAuthenticated] 
+		#lista que vai autenticar as permissões que a views possui, só os usuários autenticados vão gerar endpoints pra api
+
+
+	@api_view(['GET', 'POST']) #essa api pode ser acessada pelos métodos get e post
+	def hello_world(request):
+		if request.method == 'POST':
+			return Response({'message': f'Hello, {request.data.get("name")}'})
+		return Response({'hello': 'world API'})
+
+
+7 = rest_api / serializers.py :
+
+	from rest_framework.serializers import ModelSerializer, HyperlinkedRelatedField ####
+	from booking.models import Booking, Branch
+
+
+	class BranchModelSerializer(ModelSerializer): #####
+		booking = HyperlinkedRelatedField(
+			many = True,
+			read_only = True,
+			view_name='api:booking-detail'
+		)
+		
+		class Meta:
+			model = Branch
+			fields = '__all__'
+
+
+	class BookingModelSerializer(ModelSerializer):
+		branch = BranchModelSerializer(read_only=True)
+
+		class Meta:
+			model = Booking
+			fields = '__all__'
+
+8 = definir a rota
+	rest_api / urls.py :
+
+	
