@@ -1098,4 +1098,48 @@ como opcional para não dar conflito com os dados já existentes no BD.
 8 = definir a rota
 	rest_api / urls.py :
 
+
+=========================================================	
+====================== AULA 12 ==========================
+=========================================================
+
+DJANGO TESTS - TESTANDO MODELOS, VIEWS, etc
+
+1 = $ pip install pytest-django
+	$ pip install pytest
+
+2 = criar pytest.ini na pasta raiz (mesma do manage.py)
+
+	[pytest]
+	DJANGO_SETTINGS_MODULE = petwash_project.settings
+	python_files = tests.py test_*.py *_test.py
+
+3 = na pasta booking, excluir tests.py e criar uma pasta tests com os arqs: __init__.py e 
+	test_models.py:
+
+	from datetime import date
+	import pytest
+	from model_bakery import baker
+	from booking.models import Booking
+
+
+	#fixture faz com que a função possa ser usada como parâmetro em outros testes
+	@pytest.fixture
+	def booking():
+		booking = baker.make(
+			Booking,
+			name = 'Floki',
+			date = date.today(),
+			shift = 'Morning'
+		)
+		return booking
+
+
+	@pytest.mark.django_db
+	def test_booking_should_return_string_format(booking):
+		assert str(booking) == f'Floki: {date.today()} - Morning'
+
+4 = dentro da mesma pasta tests, criar test_views.py:
+
 	
+
