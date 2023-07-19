@@ -1142,4 +1142,108 @@ DJANGO TESTS - TESTANDO MODELOS, VIEWS, etc
 4 = dentro da mesma pasta tests, criar test_views.py:
 
 	
+=========================================================	
+====================== AULA 13 ==========================
+=========================================================
 
+DJANGO TESTS - TESTANDO A API
+
+1 = criar na pasta da API uma pasta tests com test_views.py e __init__.py dentro dela
+
+2 = excluir o tests.py do root da pasta api
+
+3 = no test_views.py:
+
+	import pytest
+	from rest_framework.test import APIClient
+
+	@pytest.mark.django_db
+	def test_all_petshops():
+		client = APIClient()
+		answer = client.get('/api/booking')
+		assert len(answer.data['results']) == 0
+
+4 = criar o test_serializers.py:
+
+	import pytest
+	import datetime
+	from model_bakery import baker
+	from booking.models import Booking
+	from rest_api.serializers import BookingModelSerializer
+
+	@pytest.fixture
+	def wrong_booking_data():
+		yesterday = datetime.date.today() - datetime.timedelta(days=1)
+		booking = baker.make(Booking)
+		return {
+			'name': 'test name',
+			'email': 'email@email.com',
+			'pet_name': 'pet name',
+			'date': yesterday,
+			'shift': 'morning',
+			'size': 0,
+			'notes': 'blabla blabla',
+			'booking': booking.pk,
+		}
+
+	@pytest.mark.django_db
+	def test_invalid_booking_date(wrong_booking_data):
+		serializer = BookingModelSerializer(data=wrong_booking_data)
+		assert not serializer.is_valid()
+
+5 = o teste vai dar errado, e é isso mesmo
+	é porque a lógica da validação está em outra pasta (no forms.py do booking)
+
+6 = para isso, ir no serializers.py e atualizar:
+
+	import datetime
+	from rest_framework.serializers import (
+		ModelSerializer, 
+		HyperlinkedRelatedField,
+		PrimaryKeyRelatedField,
+		ValidationError
+	)
+	from booking.models import Booking, Branch
+
+
+	class BranchModelSerializer(ModelSerializer):
+		booking = HyperlinkedRelatedField(
+			many = True,
+			read_only = True,
+			view_name='api:booking-detail'
+		)
+
+		class Meta:
+			model = Branch
+			fields = '__all__'
+
+
+	class BranchRelatedCustomSerializer(PrimaryKeyRelatedField):
+		def __init__(self, **kwargs):
+			self.serializer = BranchModelSerializer
+			super().__init__(**kwargs)
+
+		def use_pk_only_optimization(self):
+			return False
+		
+		def to_representation(self, value):
+			return self.serializer(value, context=self.context).data
+
+
+	class BookingModelSerializer(ModelSerializer):
+		branch = BranchRelatedCustomSerializer(
+			queryset = Branch.objects.all(),
+			read_only=False
+		)
+
+		def validate_data(self, value):
+			today = datetime.date.today()
+			if value < today:
+				raise ValidationError('You cannot book a bath on a past day.')
+			return value
+		
+		class Meta:
+			model = Booking
+			fields = '__all__'
+
+7 = 

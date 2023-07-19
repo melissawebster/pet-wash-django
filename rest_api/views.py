@@ -23,7 +23,7 @@ class BookingModelViewSet(ModelViewSet):
     #define qual serializer vai ser utilizado para tratar o objeto (e possibilitar um futuro json)
     authentication_classes = [TokenAuthentication] 
     #lista para aceitar as autenticações baseadas em token
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticatedOrReadOnly] 
     #lista que vai autenticar as permissões que a views possui, só os usuários autenticados vão gerar endpoints pra api
 
 
