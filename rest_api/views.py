@@ -23,7 +23,7 @@ class BookingModelViewSet(ModelViewSet):
     #define qual serializer vai ser utilizado para tratar o objeto (e possibilitar um futuro json)
     authentication_classes = [TokenAuthentication] 
     #lista para aceitar as autenticações baseadas em token
-    permission_classes = [IsAuthenticatedOrReadOnly] 
+    permission_classes = [IsAuthenticated] 
     #lista que vai autenticar as permissões que a views possui, só os usuários autenticados vão gerar endpoints pra api
 
 
@@ -32,4 +32,3 @@ def hello_world(request):
     if request.method == 'POST':
         return Response({'message': f'Hello, {request.data.get("name")}'})
     return Response({'hello': 'world API'})
-
