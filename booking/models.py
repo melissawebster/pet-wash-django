@@ -22,7 +22,7 @@ class Booking(models.Model):
 
     branch = models.ForeignKey(
         'Branch', 
-        related_name='what',
+        related_name='branch',
         on_delete=models.CASCADE,
         blank=True,
         null=True
