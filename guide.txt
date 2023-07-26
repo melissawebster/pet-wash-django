@@ -1,7 +1,5 @@
 ======== DJANGO ========
 
-http://127.0.0.1:8000/
-
 
 SWEAT LESSONS:
 
@@ -1246,4 +1244,14 @@ DJANGO TESTS - TESTANDO A API
 			model = Booking
 			fields = '__all__'
 
-7 = 
+
+=========================================================	
+====================== AULA 14 ==========================
+=========================================================
+COMANDOS NO DJANGO
+
+desafio: fazer um comando que sorteia algum cliente para receber cupom de agendamento grátis
+
+
+1 = dentro de booking, criar a pasta management e commands dentro dela
+
