@@ -1,0 +1,1 @@
+web: gunicorn petwash_project.wsgi

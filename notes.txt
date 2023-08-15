@@ -1334,3 +1334,46 @@ desafio: fazer um comando que sorteia algum cliente para receber cupom de agenda
 =========================================================	
 ====================== AULA 15 ==========================
 =========================================================
+DEPLOY NO RAILWAY.APP
+
+
+1 = criar no root:
+
+	==> runtime.txt 
+
+		python-3.11.0
+
+	==> requirements.txt
+
+		django==4.2.1
+		djangorestframework==3.14.0
+		django-bootstrap-v5==1.0.11
+		gunicorn==20.1.0
+		dj-database-url==1.0.0
+		django-filter==22.1
+		python-decouple==3.6
+		psycopg2==2.9.6
+		whitenoise==6.2.0
+
+
+2 = Configurar o dj-database no settings.py 
+
+	import os
+	from dj_database_url import parse as db_url
+	from decouple import config 
+
+	DEBUG = config('DEBUG', default=True, cast=bool)
+
+	DATABASES = {
+    'default': config('DATABASE_URL', default='sqlite:///db.sqlite3', cast=db_url)
+}
+
+	STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+
+3 = Criar dentro da pasta de projeto (petwash_project:)
+	Esse arquivo carrega as configurações em produção
+	
+	==> Procfile
+
+		web: gunicorn petwash_project.wsgi
