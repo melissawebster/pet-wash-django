@@ -21,7 +21,7 @@ que nao seja o 8000 padrão)
 
 3 = ativar o venv
 
-	$ source venv/bin/activate
+	$ venv/Scripts/activate
 
 4 = instalar o django
 
