@@ -1,5 +1,5 @@
 venv:
-	venv/Scripts/activate
+	venv\Scripts\activate
 
 run:
 	python manage.py runserver 9000

@@ -12,8 +12,8 @@ from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnl
 class BranchModelViewSet(ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchModelSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class BookingModelViewSet(ModelViewSet):
@@ -21,9 +21,9 @@ class BookingModelViewSet(ModelViewSet):
     # faz o query no model, mas retorna um objeto
     serializer_class = BookingModelSerializer 
     #define qual serializer vai ser utilizado para tratar o objeto (e possibilitar um futuro json)
-    authentication_classes = [TokenAuthentication] 
+    # authentication_classes = [TokenAuthentication] 
     #lista para aceitar as autenticações baseadas em token
-    permission_classes = [IsAuthenticated] 
+    # permission_classes = [IsAuthenticated] 
     #lista que vai autenticar as permissões que a views possui, só os usuários autenticados vão gerar endpoints pra api
 
 
