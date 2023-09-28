@@ -1,7 +1,7 @@
 === PetWash ===
 
 - CLIENT | Bootstrap, CSS, HTML
-- SERVER | Python, Django API, SQLite
+- SERVER | Python, Django, PostgreSQL
 
 === Petshop bath reservation system project ===
 
