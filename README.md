@@ -17,6 +17,6 @@ To run the app locally:
 - In the terminal, make sure you are in the folder location and activate the virtual environment: venv\Scripts\activate
 - Now run the command to run the server: make run
 - You will be able to see it in your browser: http:/127.0.0.1:9000/
-- Administrative area URL: http:/127.0.0.1:9000/admin/
+- Administrative area URL: http:/127.0.0.1:9000/admin/ (user: mwebster || password: petwash#)
 
 ![home-screenshot](https://github.com/melissawebster/pet-wash-django/assets/118695509/3263fdec-7f66-44fe-8b61-3f8315900b5a)
