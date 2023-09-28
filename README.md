@@ -5,7 +5,6 @@
 
 === Petshop bath reservation system project ===
 
-- Pet and owner registration
 - Administrative area for creating, editing, deleting, and viewing appointments
 - Display of all appointments for the day
 - Scheduling one bath per chosen day, providing the pet's species and size
